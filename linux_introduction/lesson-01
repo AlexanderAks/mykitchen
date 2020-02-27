@@ -1,0 +1,193 @@
+По скольку разрешено использовать любые системы виртуализции, а с установкой Ubuntu Desktop и Ubuntu Server я уже неодноркратно
+сталкивался на работе, решил использовать привычный мне хостинг - https://vscale.io/. Создал там виртуальную машину на Ubunru
+Server 18.04 LTS со следующими характеристиками:
+
+- 512 МБ RAM 
+- 20 ГБ SSD 
+- 1 CPU
+
+Полагаю что для данного курса этого должно хватить, при необходимости смогу нарастить её системные характеристики. Перехожу к
+первичной настройке и установке всего необходимого для дальнейшей работы. SSH ключ добавил сразу через web интерфейс хостинга.
+Поэтому могу зайти на машину, пока под root, но только для первого входа.
+
+cook@dell:~$ ssh root@31.184.252.166
+The authenticity of host '31.184.252.166 (31.184.252.166)' can't be established.
+ECDSA key fingerprint is SHA256:wPZPCm3bGyk8dnDWsEb9WGrqhtcu4cghTaYXsf7oTH4.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '31.184.252.166' (ECDSA) to the list of known hosts.
+Welcome to Ubuntu 18.04.4 LTS (GNU/Linux 4.15.0-76-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+The programs included with the Ubuntu system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+applicable law.
+
+
+
+Как мы можем видеть, я успешно попал на виртуальную машину. Теперь создам пользователя, под которым я буду в дальнейшем работать
+и дам ему привелегии суперпользователя, что бы не ходить на машину под рутом.
+
+root@cs782580:~# adduser cook
+Adding user `cook' ...
+Adding new group `cook' (1000) ...
+Adding new user `cook' (1000) with group `cook' ...
+Creating home directory `/home/cook' ...
+Copying files from `/etc/skel' ...
+Enter new UNIX password: 
+Retype new UNIX password: 
+passwd: password updated successfully
+Changing the user information for cook
+Enter the new value, or press ENTER for the default
+	Full Name []: Cook
+	Room Number []: 
+	Work Phone []: 
+	Home Phone []: 
+	Other []: 
+Is the information correct? [Y/n] Y
+root@cs782580:~# usermod -aG sudo cook
+
+
+
+Новый пользователь создан, теперь хотелось бы изменить ещё пару вещей. Для начала сделаю:
+
+root@cs782580:~# apt update
+root@cs782580:~# apt upgrade
+
+Вывод команд не копирую сюда, что бы не было слишком грамостко и файл не раздулся до невероятных размеров. Далее поставлю vim, 
+так как по умолчанию он отсутствует.
+
+root@cs782580:~# apt install vim
+
+На текущий момент меня не устраивает хостнейм моей виртуальной машины, поэтому я его изменю:
+
+root@cs782580:~# vim /etc/hostname 
+root@cs782580:~# vim /etc/hosts
+
+Меняю содержимое обоих файлов, таким образом что бы они выглядели так:
+
+root@cs782580:~# cat /etc/hostname 
+mykitchen`
+root@cs782580:~# cat /etc/hosts
+127.0.0.1	localhost mykitchen
+
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+root@cs782580:~# 
+
+
+Далее для того, что бы после перезагрузки виртуальной машины, хостнейм не поменялся (особенности данного хостинга) выполню
+
+root@cs782580:~# hostnamectl set-hostname mykitchen
+root@cs782580:~# scarletctl disable set-hostname
+Module set-hostname is now disabled at 'firstboot'
+Module set-hostname is now disabled at 'boot'
+root@cs782580:~# 
+
+Далее закину свой публичный ключ, в домашнюю директорию нового пользователя. Для того что бы в скором времени авторизоваться
+под ним удаленно, не используя пароль.
+
+
+root@cs782580:~# cd /home/cook/
+root@cs782580:/home/cook# mkdir .ssh
+root@cs782580:/home/cook# cd .ssh
+root@cs782580:/home/cook# touch id_rsa.pub
+root@cs782580:/home/cook# vim id_rsa.pub 
+root@cs782580:/home/cook# cat id_rsa.pub 
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDdu6GjlVU01VE5DzR3nWs4AIi2xYPKCIwP4hAY8jaWD7h7PpcGNpLgt9D4Eo1PhtkGe0aRUdTyEDAVkvshQTJbpOsagU256PzenXiiseDYmHwrgtaa+ruXkKuzGDrlexzo9RU4P1+INmj47CTh34qFdTY8JfMH97pevwj2V9qWM9GRgmajwiJoMZp68ISh/75+Relx0YC766zbeh0KqClZudLRQ5a/MASlZLyaaxOjFzGPnIx3WPqx66QadZM7XMN6L1qi8dlrCdZL2dQHfpa51Xqstf6BC40D5Wu5GtLMRXlWW2oLHQSWoQAFnqO18rYwJNVInRwfzZ0GrTljDxWydeqMsOrmx1big1xlps32BViQuF3YVRNJlCruOe9LO+4pjDqc6IiJBbZsJHv+5TDiNcc4tW5RMAn4KPEf8mFISK0PDKNZcQsqML7E0vxAZtiHrZf52K0JARsOb+V56F1F/t0maTauebcyw/Vvv4qxytSvMAmGZ4mnAra3v/aGQfU= cook@dell
+
+root@mykitchen:~# systemctl restart sshd.service
+
+Теперь перезагружа сервер, для смены хостнейма и логинюсь под новым пользователем.
+
+root@cs782580:/home/cook# reboot 
+Connection to 31.184.252.166 closed by remote host.
+Connection to 31.184.252.166 closed.
+
+Пробую залогиниться под польоватлем cook.
+
+cook@dell:~$ ssh cook@31.184.252.166
+cook@31.184.252.166's password: 
+Welcome to Ubuntu 18.04.4 LTS (GNU/Linux 4.15.0-88-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+Last login: Thu Feb 27 21:34:52 2020 from 185.6.247.97
+cook@mykitchen:~$ sudo -s
+[sudo] password for cook:
+
+Залогиниться получилось, но с авторищацией по паролю, попробую поправить. Хочется авторизацию по ключу. Подозреваю что дело в
+правах на директори и файл, которые я создавал от рута.
+
+root@mykitchen:~/.ssh# chgrp cook id_rsa.pub 
+root@mykitchen:~/.ssh# chown cook id_rsa.pub 
+root@mykitchen:~/.ssh# ls -la
+total 12
+drwxr-xr-x 2 cook root 4096 фев 27 21:34 .
+drwxr-xr-x 5 cook cook 4096 фев 27 21:34 ..
+-rw-r--r-- 1 cook cook  563 фев 27 21:29 id_rsa.pub
+
+root@mykitchen:~# chown cook .ssh/
+root@mykitchen:~# chgrp cook .ssh/
+root@mykitchen:~# ls -la .ssh/
+total 12
+drwxr-xr-x 2 cook cook 4096 фев 27 21:34 .
+drwxr-xr-x 5 cook cook 4096 фев 27 21:34 ..
+-rw-r--r-- 1 cook cook  563 фев 27 21:29 id_rsa.pub
+
+Права поменял успешно, пробую подключиться по новой. Не получилось, тут вспомнил, что не правильно назвал файл. Меняю имя,
+
+cook@mykitchen:~/.ssh$ mv id_rsa.pub authorized_keys
+cook@mykitchen:~/.ssh$ cat authorized_keys 
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDdu6GjlVU01VE5DzR3nWs4AIi2xYPKCIwP4hAY8jaWD7h7PpcGNpLgt9D4Eo1PhtkGe0aRUdTyEDAVkvshQTJbpOsagU256PzenXiiseDYmHwrgtaa+ruXkKuzGDrlexzo9RU4P1+INmj47CTh34qFdTY8JfMH97pevwj2V9qWM9GRgmajwiJoMZp68ISh/75+Relx0YC766zbeh0KqClZudLRQ5a/MASlZLyaaxOjFzGPnIx3WPqx66QadZM7XMN6L1qi8dlrCdZL2dQHfpa51Xqstf6BC40D5Wu5GtLMRXlWW2oLHQSWoQAFnqO18rYwJNVInRwfzZ0GrTljDxWydeqMsOrmx1big1xlps32BViQuF3YVRNJlCruOe9LO+4pjDqc6IiJBbZsJHv+5TDiNcc4tW5RMAn4KPEf8mFISK0PDKNZcQsqML7E0vxAZtiHrZf52K0JARsOb+V56F1F/t0maTauebcyw/Vvv4qxytSvMAmGZ4mnAra3v/aGQfU= cook@dell
+
+Пробую снова подключиться с авторизацией по ключу.
+
+cook@dell:~$ ssh cook@31.184.252.166
+Welcome to Ubuntu 18.04.4 LTS (GNU/Linux 4.15.0-88-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+Last login: Thu Feb 27 21:44:25 2020 from 185.6.247.97
+cook@mykitchen:~$ 
+
+Все получилось. Возвращаюсь к пунктам домашнего задания, полагаю что openssh-server уже установлен, так как это серверная Ubuntu,
+более того выше я уже перезапускал его службу. Так или иначе мы можем это проверить.
+
+cook@mykitchen:~$ dpkg -l | grep openssh
+ii  openssh-client                        1:7.6p1-4ubuntu0.3                              amd64        secure shell (SSH) client, for secure access to remote machines
+ii  openssh-server                        1:7.6p1-4ubuntu0.3                              amd64        secure shell (SSH) server, for secure access from remote machines
+ii  openssh-sftp-server                   1:7.6p1-4ubuntu0.3                              amd64        secure shell (SSH) sftp server module, for SFTP access from remote machines
+
+Как мы можем видеть выше, он установлен. Далее поставлю mc.
+
+cook@mykitchen:~$ sudo -s
+[sudo] password for cook: 
+root@mykitchen:~# apt install mc
+
+
+
+в целом считаю, что виртуальная машина подготовлена к удобной дальшейшей работе на ней. Если что то нужно доделать, то сделаю без
+проблем.
+
+
+
+
+
+
+
+
+
+
+
