@@ -1,0 +1,749 @@
+Приступаю к выполнению второго домашнего задания. Для начала зайду по ssh на ранее подготовленную виртуальную машину.
+
+cook@dell:~/environments$ ssh cook@31.184.252.166
+Welcome to Ubuntu 18.04.4 LTS (GNU/Linux 4.15.0-88-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+
+ * Canonical Livepatch is available for installation.
+   - Reduce system reboots and improve kernel security. Activate at:
+     https://ubuntu.com/livepatch
+Last login: Thu Feb 27 21:47:10 2020 from 185.6.247.97
+cook@mykitchen:~$ sudo -s
+[sudo] password for cook: 
+root@mykitchen:~# 
+
+Перейду в корневую директорию
+root@mykitchen:~# cd /
+
+Посмотрим её содержимое
+root@mykitchen:/# ls -la
+total 142380
+drwxr-xr-x 22 root root      4096 фев 27 21:16 .
+drwxr-xr-x 22 root root      4096 фев 27 21:16 ..
+drwxr-xr-x  2 root root      4096 фев 27 21:16 bin
+drwxr-xr-x  3 root root      4096 фев 27 21:17 boot
+drwxr-xr-x 16 root root      3680 фев 27 21:30 dev
+drwxr-xr-x 80 root root      4096 фев 27 21:50 etc
+drwxr-xr-x  3 root root      4096 фев 27 21:07 home
+lrwxrwxrwx  1 root root        33 фев 27 21:16 initrd.img -> boot/initrd.img-4.15.0-88-generic
+lrwxrwxrwx  1 root root        33 фев  5 12:48 initrd.img.old -> boot/initrd.img-4.15.0-76-generic
+drwxr-xr-x 18 root root      4096 фев  5 12:50 lib
+drwxr-xr-x  2 root root      4096 фев  5 12:46 lib64
+drwx------  2 root root     16384 фев  5 12:46 lost+found
+drwxr-xr-x  2 root root      4096 фев  5 12:46 media
+drwxr-xr-x  2 root root      4096 фев  5 12:46 mnt
+drwxr-xr-x  2 root root      4096 фев  5 12:46 opt
+dr-xr-xr-x 84 root root         0 фев 27 21:30 proc
+drwx------  5 root root      4096 фев 27 21:30 root
+drwxr-xr-x 18 root root       600 мар  2 19:49 run
+drwxr-xr-x  2 root root      4096 фев 27 21:16 sbin
+drwxr-xr-x  2 root root      4096 фев  5 12:46 srv
+-rw-------  1 root root 145710080 фев  5 12:46 swapfile
+dr-xr-xr-x 13 root root         0 мар  2 19:56 sys
+drwxrwxrwt  9 root root      4096 мар  2 19:55 tmp
+drwxr-xr-x 10 root root      4096 фев  5 12:46 usr
+drwxr-xr-x 11 root root      4096 фев  5 12:46 var
+lrwxrwxrwx  1 root root        30 фев 27 21:16 vmlinuz -> boot/vmlinuz-4.15.0-88-generic
+lrwxrwxrwx  1 root root        30 фев  5 12:48 vmlinuz.old -> boot/vmlinuz-4.15.0-76-generic
+
+команда ls с сочетанием ключей -la выведет содержимое текущего каталога в столбик, в том числе скрытые файлы, как мы можем видеть выше,
+скрытых файло в корневой директории нет. Далее посмотрим содержимое директории /etc
+
+root@mykitchen:/# ls -la /etc/
+total 724
+drwxr-xr-x 80 root root    4096 фев 27 21:50 .
+drwxr-xr-x 22 root root    4096 фев 27 21:16 ..
+-rw-r--r--  1 root root    3028 фев  5 12:46 adduser.conf
+drwxr-xr-x  2 root root    4096 фев 27 21:20 alternatives
+drwxr-xr-x  3 root root    4096 фев  5 12:50 apm
+drwxr-xr-x  3 root root    4096 фев  5 12:51 apparmor
+drwxr-xr-x  8 root root    4096 фев  5 12:51 apparmor.d
+drwxr-xr-x  7 root root    4096 фев  5 12:50 apt
+-rw-r--r--  1 root root    2319 апр  4  2018 bash.bashrc
+-rw-r--r--  1 root root      45 апр  2  2018 bash_completion
+drwxr-xr-x  2 root root    4096 фев  5 12:52 bash_completion.d
+-rw-r--r--  1 root root     367 янв 27  2016 bindresvport.blacklist
+drwxr-xr-x  2 root root    4096 апр 20  2018 binfmt.d
+drwxr-xr-x  3 root root    4096 фев  5 12:46 ca-certificates
+-rw-r--r--  1 root root    5898 фев  5 12:47 ca-certificates.conf
+drwxr-xr-x  2 root root    4096 фев  5 12:51 calendar
+drwxr-xr-x  2 root root    4096 фев  5 12:50 console-setup
+drwxr-xr-x  2 root root    4096 фев  5 12:51 cron.d
+drwxr-xr-x  2 root root    4096 фев  5 12:51 cron.daily
+drwxr-xr-x  2 root root    4096 фев  5 12:47 cron.hourly
+drwxr-xr-x  2 root root    4096 фев  5 12:47 cron.monthly
+-rw-r--r--  1 root root     724 фев 27 20:53 crontab
+drwxr-xr-x  2 root root    4096 фев  5 12:51 cron.weekly
+drwxr-xr-x  4 root root    4096 фев  5 12:46 dbus-1
+-rw-r--r--  1 root root    2969 фев 28  2018 debconf.conf
+-rw-r--r--  1 root root      11 июн 26  2017 debian_version
+drwxr-xr-x  2 root root    4096 фев 27 21:16 default
+-rw-r--r--  1 root root     604 авг 13  2017 deluser.conf
+drwxr-xr-x  2 root root    4096 фев  5 12:50 depmod.d
+drwxr-xr-x  4 root root    4096 фев  5 12:50 dhcp
+drwxr-xr-x  2 root root    4096 фев  5 12:51 dictionaries-common
+drwxr-xr-x  4 root root    4096 фев  5 12:49 dpkg
+drwxr-xr-x  3 root root    4096 фев  5 12:51 emacs
+-rw-r--r--  1 root root      96 фев  5 12:46 environment
+drwxr-xr-x  4 root root    4096 фев  5 12:50 fonts
+-rw-r--r--  1 root root     555 фев  5 12:52 fstab
+-rw-r--r--  1 root root     280 июн 20  2014 fuse.conf
+-rw-r--r--  1 root root    2584 фев  1  2018 gai.conf
+drwxr-xr-x  2 root root    4096 фев  5 12:51 groff
+-rw-r--r--  1 root root     665 фев 27 21:08 group
+-rw-r--r--  1 root root     661 фев 27 21:07 group-
+drwxr-xr-x  2 root root    4096 фев  5 12:52 grub.d
+-rw-r-----  1 root shadow   553 фев 27 21:08 gshadow
+-rw-r-----  1 root shadow   549 фев 27 21:07 gshadow-
+drwxr-xr-x  3 root root    4096 фев  5 12:50 gss
+-rw-r--r--  1 root root    4861 фев 22  2018 hdparm.conf
+-rw-r--r--  1 root root      92 апр  9  2018 host.conf
+-rw-r--r--  1 root root      11 фев 27 21:22 hostname
+-rw-r--r--  1 root root     179 фев 27 21:22 hosts
+-rw-r--r--  1 root root     411 фев  5 12:51 hosts.allow
+-rw-r--r--  1 root root     711 фев  5 12:51 hosts.deny
+drwxr-xr-x  2 root root    4096 фев  5 12:52 init
+drwxr-xr-x  2 root root    4096 фев 27 21:16 init.d
+drwxr-xr-x  5 root root    4096 фев  5 12:47 initramfs-tools
+-rw-r--r--  1 root root    1748 мая 15  2017 inputrc
+drwxr-xr-x  4 root root    4096 фев  5 12:47 iproute2
+-rw-r--r--  1 root root      26 янв 30 15:28 issue
+-rw-r--r--  1 root root      19 янв 30 15:28 issue.net
+drwxr-xr-x  6 root root    4096 фев  5 12:48 kernel
+-rw-r--r--  1 root root     144 фев  5 12:52 kernel-img.conf
+drwxr-xr-x  2 root root    4096 фев  5 12:52 ldap
+-rw-r--r--  1 root root   20832 фев 27 21:50 ld.so.cache
+-rw-r--r--  1 root root      34 янв 27  2016 ld.so.conf
+drwxr-xr-x  2 root root    4096 фев  5 12:46 ld.so.conf.d
+-rw-r--r--  1 root root     267 апр  9  2018 legal
+-rw-r--r--  1 root root     191 фев  8  2018 libaudit.conf
+drwxr-xr-x  2 root root    4096 фев  5 12:52 libibverbs.d
+drwxr-xr-x  2 root root    4096 фев  5 12:48 libnl-3
+-rw-r--r--  1 root root    2995 апр 16  2018 locale.alias
+-rw-r--r--  1 root root    9395 фев  5 12:47 locale.gen
+lrwxrwxrwx  1 root root      33 фев  5 12:50 localtime -> /usr/share/zoneinfo/Europe/Moscow
+drwxr-xr-x  3 root root    4096 фев  5 12:47 logcheck
+-rw-r--r--  1 root root   10550 янв 25  2018 login.defs
+-rw-r--r--  1 root root     703 авг 21  2017 logrotate.conf
+drwxr-xr-x  2 root root    4096 фев  5 12:51 logrotate.d
+-rw-r--r--  1 root root     105 янв 30 15:28 lsb-release
+-rw-r--r--  1 root root   14867 окт 13  2016 ltrace.conf
+-r--r--r--  1 root root      33 фев 27 20:53 machine-id
+-rw-r--r--  1 root root     111 фев 13  2018 magic
+-rw-r--r--  1 root root     111 фев 13  2018 magic.mime
+-rw-r--r--  1 root root    3611 фев 27 21:50 mailcap
+-rw-r--r--  1 root root     449 июл 15  2016 mailcap.order
+-rw-r--r--  1 root root    5174 авг  4  2018 manpath.config
+drwxr-xr-x  2 root root    4096 фев 27 21:50 mc
+-rw-r--r--  1 root root   24301 июл 15  2016 mime.types
+-rw-r--r--  1 root root     812 мар 24  2018 mke2fs.conf
+drwxr-xr-x  2 root root    4096 фев  5 12:52 modprobe.d
+-rw-r--r--  1 root root     226 фев 27 20:53 modules
+drwxr-xr-x  2 root root    4096 фев 27 21:16 modules-load.d
+lrwxrwxrwx  1 root root      19 фев 27 20:53 mtab -> ../proc/self/mounts
+-rw-r--r--  1 root root    9048 фев 14  2018 nanorc
+drwxr-xr-x  2 root root    4096 фев  5 12:46 netplan
+drwxr-xr-x  3 root root    4096 фев  5 12:51 network
+drwxr-xr-x  6 root root    4096 фев  5 12:50 networkd-dispatcher
+-rw-r--r--  1 root root      91 апр  9  2018 networks
+drwxr-xr-x  2 root root    4096 фев  5 12:47 newt
+-rw-r--r--  1 root root     513 фев  5 12:47 nsswitch.conf
+drwxr-xr-x  2 root root    4096 фев  5 12:46 opt
+lrwxrwxrwx  1 root root      21 янв 30 15:28 os-release -> ../usr/lib/os-release
+-rw-r--r--  1 root root     552 апр  5  2018 pam.conf
+drwxr-xr-x  2 root root    4096 фев 27 21:16 pam.d
+-rw-r--r--  1 root root    1344 фев 27 21:08 passwd
+-rw-r--r--  1 root root    1337 фев 27 21:07 passwd-
+drwxr-xr-x  4 root root    4096 фев 27 21:50 perl
+drwxr-xr-x  3 root root    4096 фев  5 12:50 pm
+-rw-r--r--  1 root root     350 фев  5 12:51 popularity-contest.conf
+-rw-r--r--  1 root root     581 апр  9  2018 profile
+drwxr-xr-x  2 root root    4096 фев  5 12:51 profile.d
+-rw-r--r--  1 root root    2932 дек 26  2016 protocols
+-rw-------  1 root root       0 фев  5 12:46 .pwd.lock
+drwxr-xr-x  2 root root    4096 фев  5 12:47 python3
+drwxr-xr-x  2 root root    4096 фев  5 12:50 python3.6
+drwxr-xr-x  2 root root    4096 фев  5 12:52 rc0.d
+drwxr-xr-x  2 root root    4096 фев  5 12:52 rc1.d
+drwxr-xr-x  2 root root    4096 фев  5 12:52 rc2.d
+drwxr-xr-x  2 root root    4096 фев  5 12:52 rc3.d
+drwxr-xr-x  2 root root    4096 фев  5 12:52 rc4.d
+drwxr-xr-x  2 root root    4096 фев  5 12:52 rc5.d
+drwxr-xr-x  2 root root    4096 фев  5 12:52 rc6.d
+drwxr-xr-x  2 root root    4096 фев  5 12:51 rcS.d
+lrwxrwxrwx  1 root root      39 фев  5 12:46 resolv.conf -> ../run/systemd/resolve/stub-resolv.conf
+-rwxr-xr-x  1 root root     268 июл 21  2017 rmt
+-rw-r--r--  1 root root     887 дек 26  2016 rpc
+-rw-r--r--  1 root root    1358 янв 30  2018 rsyslog.conf
+drwxr-xr-x  2 root root    4096 фев  5 12:51 rsyslog.d
+drwxr-xr-x  3 root root    4096 фев  5 12:52 scarlet-init
+-rw-r--r--  1 root root    4141 янв 25  2018 securetty
+drwxr-xr-x  4 root root    4096 фев  5 12:49 security
+drwxr-xr-x  2 root root    4096 фев  5 12:46 selinux
+-rw-r--r--  1 root root   19183 дек 26  2016 services
+-rw-r-----  1 root shadow   810 фев 27 21:08 shadow
+-rw-r-----  1 root shadow   687 фев  5 12:52 shadow-
+-rw-r--r--  1 root root      73 фев  5 12:46 shells
+drwxr-xr-x  2 root root    4096 фев  5 12:49 skel
+drwxr-xr-x  2 root root    4096 фев 27 20:53 ssh
+drwxr-xr-x  4 root root    4096 фев  5 12:50 ssl
+-rw-r--r--  1 root root      18 фев 27 21:07 subgid
+-rw-r--r--  1 root root       0 фев  5 12:46 subgid-
+-rw-r--r--  1 root root      18 фев 27 21:07 subuid
+-rw-r--r--  1 root root       0 фев  5 12:46 subuid-
+-r--r-----  1 root root     755 янв 18  2018 sudoers
+drwxr-xr-x  2 root root    4096 фев  5 12:50 sudoers.d
+-rw-r--r--  1 root root    2683 янв 18  2018 sysctl.conf
+drwxr-xr-x  2 root root    4096 фев 27 21:16 sysctl.d
+drwxr-xr-x  5 root root    4096 фев 27 21:16 systemd
+drwxr-xr-x  2 root root    4096 фев  5 12:49 terminfo
+-rw-r--r--  1 root root      14 фев  5 12:50 timezone
+drwxr-xr-x  2 root root    4096 апр 20  2018 tmpfiles.d
+-rw-r--r--  1 root root    1260 фев 26  2018 ucf.conf
+drwxr-xr-x  4 root root    4096 фев 27 21:16 udev
+drwxr-xr-x  3 root root    4096 фев  5 12:51 ufw
+-rw-r--r--  1 root root     403 мар  1  2018 updatedb.conf
+drwxr-xr-x  3 root root    4096 фев  5 12:51 update-manager
+drwxr-xr-x  2 root root    4096 фев  5 12:51 update-motd.d
+drwxr-xr-x  2 root root    4096 фев  5 12:50 vim
+lrwxrwxrwx  1 root root      23 фев  5 12:47 vtrgb -> /etc/alternatives/vtrgb
+-rw-r--r--  1 root root    1436 фев 26  2016 watchdog.conf
+-rw-r--r--  1 root root    4942 апр  8  2019 wgetrc
+drwxr-xr-x  4 root root    4096 фев  5 12:52 X11
+drwxr-xr-x  4 root root    4096 фев  5 12:47 xdg
+-rw-r--r--  1 root root     477 мар 16  2018 zsh_command_not_found
+
+посмотрим содержимое директории home
+root@mykitchen:/# ls -la /home/
+total 12
+drwxr-xr-x  3 root root 4096 фев 27 21:07 .
+drwxr-xr-x 22 root root 4096 фев 27 21:16 ..
+drwxr-xr-x  5 cook cook 4096 фев 27 21:34 cook
+
+как мы можем заметить тут сейчас только мой пользователь cook а так же . - текущий рабочий каталог и .. - позволяющий 
+выйти на уровень выше, в данном случае назад в корневую директорию. Далее посмотрим содержимое директории proc
+
+root@mykitchen:/# ls -la /proc/
+total 4
+dr-xr-xr-x 84 root             root                           0 фев 27 21:30 .
+drwxr-xr-x 22 root             root                        4096 фев 27 21:16 ..
+dr-xr-xr-x  9 root             root                           0 фев 27 21:30 1
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 10
+dr-xr-xr-x  9 root             root                           0 фев 27 21:35 1062
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 11
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 114
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 12
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 13
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 14
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 15
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 16
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 17
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 18
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 181
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 183
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 184
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 19
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 2
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 20
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 21
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 22
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 23
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 24
+dr-xr-xr-x  9 root             root                           0 фев 27 21:30 245
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 248
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 25
+dr-xr-xr-x  9 root             root                           0 фев 27 21:30 256
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 26
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 27
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 28
+dr-xr-xr-x  9 systemd-network  systemd-network                0 фев 27 21:30 284
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 29
+dr-xr-xr-x  9 systemd-timesync systemd-timesync               0 фев 27 21:30 290
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 3
+dr-xr-xr-x  9 systemd-resolve  systemd-resolve                0 фев 27 21:30 325
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 3281
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 33
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 34
+dr-xr-xr-x  9 root             root                           0 фев 27 21:30 342
+dr-xr-xr-x  9 root             root                           0 фев 27 21:30 343
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 35
+dr-xr-xr-x  9 root             root                           0 фев 27 21:30 353
+dr-xr-xr-x  9 syslog           syslog                         0 фев 27 21:30 354
+dr-xr-xr-x  9 messagebus       messagebus                     0 фев 27 21:30 355
+dr-xr-xr-x  9 root             root                           0 фев 27 21:30 360
+dr-xr-xr-x  9 root             root                           0 фев 27 21:30 365
+dr-xr-xr-x  9 root             root                           0 фев 27 21:30 375
+dr-xr-xr-x  9 root             root                           0 мар  2 19:49 3886
+dr-xr-xr-x  9 cook             cook                           0 мар  2 19:49 3888
+dr-xr-xr-x  9 cook             cook                           0 мар  2 19:49 3889
+dr-xr-xr-x  9 cook             cook                           0 мар  2 19:55 3938
+dr-xr-xr-x  9 cook             cook                           0 мар  2 19:49 3939
+dr-xr-xr-x  9 root             root                           0 мар  2 19:49 3958
+dr-xr-xr-x  9 root             root                           0 мар  2 19:49 3959
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 3997
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 4
+dr-xr-xr-x  9 root             root                           0 мар  2 20:12 4200
+dr-xr-xr-x  9 root             root                           0 мар  2 20:12 4236
+dr-xr-xr-x  9 sshd             nogroup                        0 мар  2 20:12 4237
+dr-xr-xr-x  9 root             root                           0 мар  2 20:12 4240
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 6
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 7
+dr-xr-xr-x  9 root             root                           0 фев 27 21:30 758
+dr-xr-xr-x  9 root             root                           0 фев 27 21:30 763
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 77
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 78
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 79
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 8
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 80
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 81
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 82
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 88
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 9
+dr-xr-xr-x  9 root             root                           0 мар  2 19:55 97
+dr-xr-xr-x  2 root             root                           0 фев 27 21:30 acpi
+-r--r--r--  1 root             root                           0 мар  2 20:12 buddyinfo
+dr-xr-xr-x  4 root             root                           0 фев 27 21:30 bus
+-r--r--r--  1 root             root                           0 мар  2 20:12 cgroups
+-r--r--r--  1 root             root                           0 мар  2 20:12 cmdline
+-r--r--r--  1 root             root                           0 мар  2 20:12 consoles
+-r--r--r--  1 root             root                           0 мар  2 20:12 cpuinfo
+-r--r--r--  1 root             root                           0 мар  2 20:12 crypto
+-r--r--r--  1 root             root                           0 мар  2 20:12 devices
+-r--r--r--  1 root             root                           0 мар  2 20:12 diskstats
+-r--r--r--  1 root             root                           0 мар  2 20:12 dma
+dr-xr-xr-x  2 root             root                           0 мар  2 20:12 driver
+-r--r--r--  1 root             root                           0 мар  2 20:12 execdomains
+-r--r--r--  1 root             root                           0 мар  2 20:12 fb
+-r--r--r--  1 root             root                           0 мар  2 20:12 filesystems
+dr-xr-xr-x  5 root             root                           0 фев 27 21:30 fs
+-r--r--r--  1 root             root                           0 мар  2 20:12 interrupts
+-r--r--r--  1 root             root                           0 мар  2 20:12 iomem
+-r--r--r--  1 root             root                           0 мар  2 20:12 ioports
+dr-xr-xr-x 23 root             root                           0 фев 27 21:30 irq
+-r--r--r--  1 root             root                           0 мар  2 20:12 kallsyms
+-r--------  1 root             root             140737477881856 мар  2 20:12 kcore
+-r--r--r--  1 root             root                           0 мар  2 20:12 keys
+-r--r--r--  1 root             root                           0 мар  2 20:12 key-users
+-r--------  1 root             root                           0 фев 27 21:30 kmsg
+-r--------  1 root             root                           0 мар  2 20:12 kpagecgroup
+-r--------  1 root             root                           0 мар  2 20:12 kpagecount
+-r--------  1 root             root                           0 мар  2 20:12 kpageflags
+-r--r--r--  1 root             root                           0 мар  2 20:12 loadavg
+-r--r--r--  1 root             root                           0 мар  2 20:12 locks
+-r--r--r--  1 root             root                           0 мар  2 20:12 mdstat
+-r--r--r--  1 root             root                           0 мар  2 20:12 meminfo
+-r--r--r--  1 root             root                           0 мар  2 20:12 misc
+-r--r--r--  1 root             root                           0 мар  2 20:12 modules
+lrwxrwxrwx  1 root             root                          11 мар  2 20:12 mounts -> self/mounts
+-rw-r--r--  1 root             root                           0 фев 27 21:30 mtrr
+lrwxrwxrwx  1 root             root                           8 мар  2 20:12 net -> self/net
+-r--------  1 root             root                           0 мар  2 20:12 pagetypeinfo
+-r--r--r--  1 root             root                           0 мар  2 20:12 partitions
+-r--r--r--  1 root             root                           0 мар  2 20:12 sched_debug
+-r--r--r--  1 root             root                           0 мар  2 20:12 schedstat
+dr-xr-xr-x  3 root             root                           0 мар  2 20:12 scsi
+lrwxrwxrwx  1 root             root                           0 фев 27 21:30 self -> 4240
+-r--------  1 root             root                           0 мар  2 20:12 slabinfo
+-r--r--r--  1 root             root                           0 мар  2 20:12 softirqs
+-r--r--r--  1 root             root                           0 мар  2 20:12 stat
+-r--r--r--  1 root             root                           0 фев 27 21:30 swaps
+dr-xr-xr-x  1 root             root                           0 фев 27 21:30 sys
+--w-------  1 root             root                           0 фев 27 21:30 sysrq-trigger
+dr-xr-xr-x  2 root             root                           0 мар  2 20:12 sysvipc
+lrwxrwxrwx  1 root             root                           0 фев 27 21:30 thread-self -> 4240/task/4240
+-r--------  1 root             root                           0 мар  2 20:12 timer_list
+dr-xr-xr-x  4 root             root                           0 мар  2 20:12 tty
+-r--r--r--  1 root             root                           0 мар  2 20:12 uptime
+-r--r--r--  1 root             root                           0 мар  2 20:12 version
+-r--r--r--  1 root             root                           0 мар  2 20:12 version_signature
+-r--------  1 root             root                           0 мар  2 20:12 vmallocinfo
+-r--r--r--  1 root             root                           0 мар  2 20:12 vmstat
+-r--r--r--  1 root             root                           0 мар  2 20:12 zoneinfo
+
+теперь перейдем к команде cat, которая позволяет нам просматривать содержимое одного или более файлов прямо в консоли и сразу
+после своего выполнения возвращает нам управление командной строкой. То есть не является текстовым редактором, но может например
+объединять несколько файлов в один общий (так называемая конкатенация).
+
+Посмотрим содержимое нескольких файлов из директории /etc
+
+root@mykitchen:/# cat /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+systemd-network:x:100:102:systemd Network Management,,,:/run/systemd/netif:/usr/sbin/nologin
+systemd-resolve:x:101:103:systemd Resolver,,,:/run/systemd/resolve:/usr/sbin/nologin
+syslog:x:102:106::/home/syslog:/usr/sbin/nologin
+messagebus:x:103:107::/nonexistent:/usr/sbin/nologin
+_apt:x:104:65534::/nonexistent:/usr/sbin/nologin
+uuidd:x:105:109::/run/uuidd:/usr/sbin/nologin
+sshd:x:106:65534::/run/sshd:/usr/sbin/nologin
+cook:x:1000:1000:Cook,,,:/home/cook:/bin/bash
+
+
+root@mykitchen:/# cat /etc/shadow
+root::18297:0:99999:7:::
+daemon:*:18297:0:99999:7:::
+bin:*:18297:0:99999:7:::
+sys:*:18297:0:99999:7:::
+sync:*:18297:0:99999:7:::
+games:*:18297:0:99999:7:::
+man:*:18297:0:99999:7:::
+lp:*:18297:0:99999:7:::
+mail:*:18297:0:99999:7:::
+news:*:18297:0:99999:7:::
+uucp:*:18297:0:99999:7:::
+proxy:*:18297:0:99999:7:::
+www-data:*:18297:0:99999:7:::
+backup:*:18297:0:99999:7:::
+list:*:18297:0:99999:7:::
+irc:*:18297:0:99999:7:::
+gnats:*:18297:0:99999:7:::
+nobody:*:18297:0:99999:7:::
+systemd-network:*:18297:0:99999:7:::
+systemd-resolve:*:18297:0:99999:7:::
+syslog:*:18297:0:99999:7:::
+messagebus:*:18297:0:99999:7:::
+_apt:*:18297:0:99999:7:::
+uuidd:*:18297:0:99999:7:::
+sshd:*:18297:0:99999:7:::
+cook:$6$4WGwCgjv$o1F6NXjF8mD0N.9hQgX6aKvXFarbyTs1BGuQ0L48EkkhWPGLzY7LZIn6/eoZDqYxfMXvnLgOgwmEKnw7sAToE/:18319:0:99999:7:::
+
+
+/etc/passwd - тут у нас хранится информация о пользователях и группах в которых он состоит, о gid, uid
+/etc/shadow - здесь обычно хранится хэш паролей который соответсвует какому либо пользователю. В данном случае виден хэш моего
+пользователя cook, так называемая соль (salt)
+
+
+посмотрев эти два файла, как правило можно понять какие пользователи существуют в нашей системе и какими правами они обладают.
+Полагаю что без прав супервользователя (которые я сейчас использую) данные файлы посмотреть не получилось бы.
+
+как выяснилось один из них без прав супервользователя посмотреть все таки можно, другой нет.
+cook@mykitchen:~$ cat /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+systemd-network:x:100:102:systemd Network Management,,,:/run/systemd/netif:/usr/sbin/nologin
+systemd-resolve:x:101:103:systemd Resolver,,,:/run/systemd/resolve:/usr/sbin/nologin
+syslog:x:102:106::/home/syslog:/usr/sbin/nologin
+messagebus:x:103:107::/nonexistent:/usr/sbin/nologin
+_apt:x:104:65534::/nonexistent:/usr/sbin/nologin
+uuidd:x:105:109::/run/uuidd:/usr/sbin/nologin
+sshd:x:106:65534::/run/sshd:/usr/sbin/nologin
+cook:x:1000:1000:Cook,,,:/home/cook:/bin/bash
+cook@mykitchen:~$ cat /etc/shadow
+cat: /etc/shadow: Permission denied
+
+причиной тому служит, различие прав, поставленых на чтение файла, для всех остальных, ниже мы можем в этом убедиться.
+
+cook@mykitchen:~$ ls -l /etc/shadow
+-rw-r----- 1 root shadow 810 фев 27 21:08 /etc/shadow
+cook@mykitchen:~$ ls -l /etc/passwd
+-rw-r--r-- 1 root root 1344 фев 27 21:08 /etc/passwd
+
+для /etc/passwd стоит право на чтение для всех прочих пользователей, в том числе и для моего пользователя cook. 
+
+ попробуем объединить содержимое двух файлов в выводе команды cat
+ 
+ cook@mykitchen:~$ cat /etc/hostname
+mykitchen`
+cook@mykitchen:~$ cat /etc/hostname /etc/resolv.conf 
+mykitchen`
+# This file is managed by man:systemd-resolved(8). Do not edit.
+#
+# This is a dynamic resolv.conf file for connecting local clients to the
+# internal DNS stub resolver of systemd-resolved. This file lists all
+# configured search domains.
+#
+# Run "systemd-resolve --status" to see details about the uplink DNS servers
+# currently in use.
+#
+# Third party programs must not access this file directly, but only through the
+# symlink at /etc/resolv.conf. To manage man:resolv.conf(5) in a different way,
+# replace this symlink by a static file or a different symlink.
+#
+# See man:systemd-resolved.service(8) for details about the supported modes of
+# operation for /etc/resolv.conf.
+
+nameserver 127.0.0.53
+options edns0
+
+как мы можем видеть, команда cat последовательно вывела содержимое сначала /etc/hostname а затем /etc/resolv.conf
+теперь снова объединим содержимое этих файлов и запишем его в новый файл
+
+cook@mykitchen:~$ cat /etc/hostname /etc/resolv.conf > /home/cook/etc_files
+cook@mykitchen:~$ cat /home/cook/etc_files 
+mykitchen`
+# This file is managed by man:systemd-resolved(8). Do not edit.
+#
+# This is a dynamic resolv.conf file for connecting local clients to the
+# internal DNS stub resolver of systemd-resolved. This file lists all
+# configured search domains.
+#
+# Run "systemd-resolve --status" to see details about the uplink DNS servers
+# currently in use.
+#
+# Third party programs must not access this file directly, but only through the
+# symlink at /etc/resolv.conf. To manage man:resolv.conf(5) in a different way,
+# replace this symlink by a static file or a different symlink.
+#
+# See man:systemd-resolved.service(8) for details about the supported modes of
+# operation for /etc/resolv.conf.
+
+nameserver 127.0.0.53
+options edns0
+
+как мы можем убедиться, файл расположеный по пути /home/cook/etc_files, содержит все то, что ранее находилось по раздельности в двух других файлах.
+переименуем данный файл при помощи команды vm
+
+cook@mykitchen:~$ mv /home/cook/etc_files /home/cook/test_file
+cook@mykitchen:~$ ls -la /home/cook/
+total 40
+drwxr-xr-x 5 cook cook 4096 мар  2 20:27 .
+drwxr-xr-x 3 root root 4096 фев 27 21:07 ..
+-rw------- 1 root root  819 мар  2 20:19 .bash_history
+-rw-r--r-- 1 cook cook  220 фев 27 21:07 .bash_logout
+-rw-r--r-- 1 cook cook 3771 фев 27 21:07 .bashrc
+drwx------ 2 cook cook 4096 фев 27 21:32 .cache
+drwx------ 3 cook cook 4096 фев 27 21:32 .gnupg
+-rw-r--r-- 1 cook cook  807 фев 27 21:07 .profile
+drwxr-xr-x 2 cook cook 4096 фев 27 21:45 .ssh
+-rw-r--r-- 1 cook cook    0 фев 27 21:32 .sudo_as_admin_successful
+-rw-rw-r-- 1 cook cook  726 мар  2 20:24 test_file
+
+как мы видим, нам удалось изменить имя файла, используя абсолютный путь и команду mv
+теперь посмотрим количество скрытых файлов и директорий в моем домашнем каталоге
+
+cook@mykitchen:~$ ls -la /home/cook/ | wc
+     12     101     596
+cook@mykitchen:~$ ls -la
+total 40
+drwxr-xr-x 5 cook cook 4096 мар  2 21:21 .
+drwxr-xr-x 3 root root 4096 фев 27 21:07 ..
+-rw------- 1 root root  819 мар  2 20:19 .bash_history
+-rw-r--r-- 1 cook cook  220 фев 27 21:07 .bash_logout
+-rw-r--r-- 1 cook cook 3771 фев 27 21:07 .bashrc
+drwx------ 2 cook cook 4096 фев 27 21:32 .cache
+drwx------ 3 cook cook 4096 фев 27 21:32 .gnupg
+-rw-r--r-- 1 cook cook  807 фев 27 21:07 .profile
+drwxr-xr-x 2 cook cook 4096 фев 27 21:45 .ssh
+-rw-r--r-- 1 cook cook    0 фев 27 21:32 .sudo_as_admin_successful
+-rw------- 1 cook cook 2048 мар  2 21:16 .viminfo
+
+комнада wc  насчитала 12 строк, но она считает все строки, а не только те которые обозначают скрытые файлы или директории,
+если считать путь к текущему каталогу "." и путь на уровень выше ".." как скрытые файлы, то файлов получится 11.
+
+Теперь попробуем посчитать количество файлов, содержимое которых я не смогу посмотреть с правами обычного пользователя,
+для того что бы вывод не был слишком объёмным сразу сохраню его в два файла, поток stdout направлю в файл etc_ok, а поток stderr отправлю
+в файл error_etc
+
+cat /etc/* 1> /home/cook/etc_ok 2> /home/cook/error_etc
+cook@mykitchen:~$ cat /home/cook/error_etc 
+cat: /etc/alternatives: Is a directory
+cat: /etc/apm: Is a directory
+cat: /etc/apparmor: Is a directory
+cat: /etc/apparmor.d: Is a directory
+cat: /etc/apt: Is a directory
+cat: /etc/bash_completion.d: Is a directory
+cat: /etc/binfmt.d: Is a directory
+cat: /etc/ca-certificates: Is a directory
+cat: /etc/calendar: Is a directory
+cat: /etc/console-setup: Is a directory
+cat: /etc/cron.d: Is a directory
+cat: /etc/cron.daily: Is a directory
+cat: /etc/cron.hourly: Is a directory
+cat: /etc/cron.monthly: Is a directory
+cat: /etc/cron.weekly: Is a directory
+cat: /etc/dbus-1: Is a directory
+cat: /etc/default: Is a directory
+cat: /etc/depmod.d: Is a directory
+cat: /etc/dhcp: Is a directory
+cat: /etc/dictionaries-common: Is a directory
+cat: /etc/dpkg: Is a directory
+cat: /etc/emacs: Is a directory
+cat: /etc/fonts: Is a directory
+cat: /etc/groff: Is a directory
+cat: /etc/grub.d: Is a directory
+cat: /etc/gshadow: Permission denied
+cat: /etc/gshadow-: Permission denied
+cat: /etc/gss: Is a directory
+cat: /etc/init: Is a directory
+cat: /etc/init.d: Is a directory
+cat: /etc/initramfs-tools: Is a directory
+cat: /etc/iproute2: Is a directory
+cat: /etc/kernel: Is a directory
+cat: /etc/ldap: Is a directory
+cat: /etc/ld.so.conf.d: Is a directory
+cat: /etc/libibverbs.d: Is a directory
+cat: /etc/libnl-3: Is a directory
+cat: /etc/logcheck: Is a directory
+cat: /etc/logrotate.d: Is a directory
+cat: /etc/mc: Is a directory
+cat: /etc/modprobe.d: Is a directory
+cat: /etc/modules-load.d: Is a directory
+cat: /etc/netplan: Is a directory
+cat: /etc/network: Is a directory
+cat: /etc/networkd-dispatcher: Is a directory
+cat: /etc/newt: Is a directory
+cat: /etc/opt: Is a directory
+cat: /etc/pam.d: Is a directory
+cat: /etc/perl: Is a directory
+cat: /etc/pm: Is a directory
+cat: /etc/profile.d: Is a directory
+cat: /etc/python3: Is a directory
+cat: /etc/python3.6: Is a directory
+cat: /etc/rc0.d: Is a directory
+cat: /etc/rc1.d: Is a directory
+cat: /etc/rc2.d: Is a directory
+cat: /etc/rc3.d: Is a directory
+cat: /etc/rc4.d: Is a directory
+cat: /etc/rc5.d: Is a directory
+cat: /etc/rc6.d: Is a directory
+cat: /etc/rcS.d: Is a directory
+cat: /etc/rsyslog.d: Is a directory
+cat: /etc/scarlet-init: Is a directory
+cat: /etc/security: Is a directory
+cat: /etc/selinux: Is a directory
+cat: /etc/shadow: Permission denied
+cat: /etc/shadow-: Permission denied
+cat: /etc/skel: Is a directory
+cat: /etc/ssh: Is a directory
+cat: /etc/ssl: Is a directory
+cat: /etc/sudoers: Permission denied
+cat: /etc/sudoers.d: Is a directory
+cat: /etc/sysctl.d: Is a directory
+cat: /etc/systemd: Is a directory
+cat: /etc/terminfo: Is a directory
+cat: /etc/tmpfiles.d: Is a directory
+cat: /etc/udev: Is a directory
+cat: /etc/ufw: Is a directory
+cat: /etc/update-manager: Is a directory
+cat: /etc/update-motd.d: Is a directory
+cat: /etc/vim: Is a directory
+cat: /etc/X11: Is a directory
+cat: /etc/xdg: Is a directory
+cook@mykitchen:~$ wc /home/cook/error_etc 
+  83  410 2876 /home/cook/error_etc
+
+как мы можем заметить выше, я успешно записал все ошибки в файл error_etc, а затем при помощи команды wc посчитал количество строк, 
+их оказалось 83, значит 83 файла я не смог просмотреть, попытка это сделать завершилась с ошибкой.
+
+далее поработаем с процессами, запущу в одном терминале пинг 
+
+cook@mykitchen:~$ ping ya.ru
+PING ya.ru (87.250.250.242) 56(84) bytes of data.
+64 bytes from ya.ru (87.250.250.242): icmp_seq=1 ttl=56 time=15.4 ms
+64 bytes from ya.ru (87.250.250.242): icmp_seq=2 ttl=56 time=15.2 ms
+64 bytes from ya.ru (87.250.250.242): icmp_seq=3 ttl=56 time=15.3 ms
+64 bytes from ya.ru (87.250.250.242): icmp_seq=4 ttl=56 time=15.3 ms
+
+
+открываю новый терминал и создаю новую ssh сессию, таким образом у меня два активных терминала
+
+cook@dell:~/environments$ ssh cook@31.184.252.166
+Welcome to Ubuntu 18.04.4 LTS (GNU/Linux 4.15.0-88-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+
+ * Canonical Livepatch is available for installation.
+   - Reduce system reboots and improve kernel security. Activate at:
+     https://ubuntu.com/livepatch
+Last login: Mon Mar  2 19:49:46 2020 from 83.69.212.26
+cook@mykitchen:~$ ps aux | grep ping
+cook      5284  0.0  0.5  22112  2812 pts/0    S+   21:34   0:00 ping ya.ru
+cook      5342  0.0  0.2  15952  1092 pts/1    S+   21:36   0:00 grep --color=auto ping
+
+как мы можем заметить, я легко нашёл при помощи команды ps aux и grep, процесс, который появился в результате выполнения команды пинг
+от лица моего пользователя cook в другом терминале.
+
+попробуем завершить процесс используя несколько разных типов сигналов, всего их 64
+cook@mykitchen:~$ kill -l
+ 1) SIGHUP	 2) SIGINT	 3) SIGQUIT	 4) SIGILL	 5) SIGTRAP
+ 6) SIGABRT	 7) SIGBUS	 8) SIGFPE	 9) SIGKILL	10) SIGUSR1
+11) SIGSEGV	12) SIGUSR2	13) SIGPIPE	14) SIGALRM	15) SIGTERM
+16) SIGSTKFLT	17) SIGCHLD	18) SIGCONT	19) SIGSTOP	20) SIGTSTP
+21) SIGTTIN	22) SIGTTOU	23) SIGURG	24) SIGXCPU	25) SIGXFSZ
+26) SIGVTALRM	27) SIGPROF	28) SIGWINCH	29) SIGIO	30) SIGPWR
+31) SIGSYS	34) SIGRTMIN	35) SIGRTMIN+1	36) SIGRTMIN+2	37) SIGRTMIN+3
+38) SIGRTMIN+4	39) SIGRTMIN+5	40) SIGRTMIN+6	41) SIGRTMIN+7	42) SIGRTMIN+8
+43) SIGRTMIN+9	44) SIGRTMIN+10	45) SIGRTMIN+11	46) SIGRTMIN+12	47) SIGRTMIN+13
+48) SIGRTMIN+14	49) SIGRTMIN+15	50) SIGRTMAX-14	51) SIGRTMAX-13	52) SIGRTMAX-12
+53) SIGRTMAX-11	54) SIGRTMAX-10	55) SIGRTMAX-9	56) SIGRTMAX-8	57) SIGRTMAX-7
+58) SIGRTMAX-6	59) SIGRTMAX-5	60) SIGRTMAX-4	61) SIGRTMAX-3	62) SIGRTMAX-2
+63) SIGRTMAX-1	64) SIGRTMAX	
+
+Я сначала воспользуюсь командой kill -15 которая пошлёт сигнал SIGTERM и должна корректно завершить процесс.
+
+cook@mykitchen:~$ kill -15 5284
+cook@mykitchen:~$ ps aux | grep ping
+cook      5422  0.0  0.2  15952  1008 pts/1    S+   21:41   0:00 grep --color=auto ping
+
+как мы видим процесс действительно завершился без ошибок. Более он не существует. В соседнем терминале пинг прервался
+
+64 bytes from ya.ru (87.250.250.242): icmp_seq=392 ttl=56 time=16.2 ms
+64 bytes from ya.ru (87.250.250.242): icmp_seq=393 ttl=56 time=15.3 ms
+64 bytes from ya.ru (87.250.250.242): icmp_seq=394 ttl=56 time=15.3 ms
+64 bytes from ya.ru (87.250.250.242): icmp_seq=395 ttl=56 time=15.3 ms
+Terminated
+cook@mykitchen:~$ 
+
+
+теперь попробуем завершить процесс более жестко, использую сигнал SIGKILL или команду kill -9
+
+cook@mykitchen:~$ ps aux | grep ping
+cook      5433  0.0  0.5  22112  2788 pts/0    S+   21:43   0:00 ping ya.ru
+cook      5437  0.0  0.2  15952  1012 pts/1    S+   21:43   0:00 grep --color=auto ping
+cook@mykitchen:~$ kill -9 5433
+cook@mykitchen:~$ ps aux | grep ping
+cook      5441  0.0  0.2  15952  1060 pts/1    S+   21:43   0:00 grep --color=auto ping
+
+как мы можем видеть, процесс снова зваершился, првоерим что в соседнем терминале.
+
+64 bytes from ya.ru (87.250.250.242): icmp_seq=35 ttl=56 time=15.3 ms
+64 bytes from ya.ru (87.250.250.242): icmp_seq=36 ttl=56 time=15.2 ms
+64 bytes from ya.ru (87.250.250.242): icmp_seq=37 ttl=56 time=15.2 ms
+Killed
+cook@mykitchen:~$ 
+
+тут мы видем что процесс был убит
+
+
+
+
+
