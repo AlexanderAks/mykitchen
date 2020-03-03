@@ -743,6 +743,81 @@ cook@mykitchen:~$
 
 тут мы видем что процесс был убит
 
+Далее запущу vim, а в соседнем терминале найду его PID
+
+root@mykitchen:~# ps aux | grep vim
+root     14052  0.1  1.8  56644  9216 pts/0    S+   13:51   0:00 vim
+root     14059  0.0  0.2  15952  1060 pts/1    S+   13:51   0:00 grep --color=auto vim
+
+сейчас он равен 14052
+завершу процесс отправив ему сигнал SIGHUP который эмитирует прерывание связи с терминалом
+
+root@mykitchen:~# kill -1 14052
+root@mykitchen:~# ps aux | grep vim
+root     14087  0.0  0.2  15952  1092 pts/1    S+   13:55   0:00 grep --color=auto vim
+
+как мы можем убедиться процесс завершен, посмотрим что в соседнем терминале
+
+root@mykitchen:~# vim
+Vim: Caught deadly signal HUP
+Vim: Finished.
+
+
+
+
+
+
+Hangup
+
+как мы можем убедиться процесс был завершен потому чт получил сигнал HUP.
+
+Попробуем теперь сигнал SIGINT который эмитирует нажатие комбинации клавиш Ctrl+C
+
+root@mykitchen:~# ps aux | grep vim
+root     14119  0.3  1.8  56644  9164 pts/0    S+   13:57   0:00 vim
+root     14121  0.0  0.2  15952  1044 pts/1    S+   13:57   0:00 grep --color=auto vim
+root@mykitchen:~# kill -2 14119
+root@mykitchen:~# ps aux | grep vim
+root     14119  0.0  1.8  56644  9164 pts/0    S+   13:57   0:00 vim
+root     14140  0.0  0.2  15952  1036 pts/1    S+   13:59   0:00 grep --color=auto vim
+
+как мы можем видеть процесс не завершился, в парельно открытом терминале я по прежнему вижу приветствующее окно vim. Видимо как раз
+тот случай, когда некоторые программы намеренно не реаигируют на сочетание клавиш Ctrl+c
+
+Тогда попробую сделать заверешние при помощи сигнала SIGFPE
+
+root@mykitchen:~# kill -8 14119
+root@mykitchen:~# ps aux | grep vim
+root     14173  0.0  0.2  15952  1056 pts/1    S+   14:03   0:00 grep --color=auto vim
+
+как мы видим процесс завершился, в соседнем терминале я вижу ещё одно подтверждение
+
+root@mykitchen:~# vim
+Vim: Caught deadly signal FPE
+Vim: Finished.
+Floating point exception
+
+Запускаю vim по новой, смотрим его PID и пробуем сигнал SIGSEGV который формируется при попытке программы обратиться к не предназначеной ей области
+памяти.
+
+root@mykitchen:~# ps aux | grep vim
+root     14187  0.3  1.8  56644  8972 pts/0    S+   14:05   0:00 vim
+root     14189  0.0  0.2  15952  1008 pts/1    S+   14:05   0:00 grep --color=auto vim
+root@mykitchen:~# kill -11 14187
+root@mykitchen:~# ps aux | grep vim
+root     14218  0.0  0.2  15952  1148 pts/1    S+   14:07   0:00 grep --color=auto vim
+
+как мы можем убедиться процесс снова завершен.
+
+Соседний терминал нас вновь об этом уведомляет.
+
+root@mykitchen:~# vim
+Vim: Caught deadly signal SEGV
+Vim: Finished.
+Segmentation fault
+
+
+
 
 
 
