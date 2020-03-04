@@ -344,3 +344,150 @@ total 8
 с точки зрения написания и более понятный мне.
 
 
+
+
+3) Создать пользователя, обладающего возможностью выполнять действия от имени суперпользователя.
+
+для создания пользователя воспользуюьс утилитой adduser
+
+root@mykitchen:~/lesson3# adduser test
+Adding user `test' ...
+Adding new group `test' (1001) ...
+Adding new user `test' (1001) with group `test' ...
+Creating home directory `/home/test' ...
+Copying files from `/etc/skel' ...
+Enter new UNIX password: 
+Retype new UNIX password: 
+Sorry, passwords do not match
+passwd: Authentication token manipulation error
+passwd: password unchanged
+Try again? [y/N] Y
+Enter new UNIX password: 
+Retype new UNIX password: 
+passwd: password updated successfully
+Changing the user information for test
+Enter the new value, or press ENTER for the default
+	Full Name []: test
+	Room Number []: 
+	Work Phone []: 
+	Home Phone []: 
+	Other []: 
+Is the information correct? [Y/n] Y
+
+root@mykitchen:~/lesson3# ls /home/
+cook  test
+
+появился новый пользователь и его домашняя директория
+
+root@mykitchen:~/lesson3# ls /home/
+cook  test
+root@mykitchen:~/lesson3# id test
+uid=1001(test) gid=1001(test) groups=1001(test)
+
+пора присвоить нашему новому пользователю право выполнять команды с привелегиями супервользователя, для этого нужно добавить его
+в группу sudo:
+
+root@mykitchen:~/lesson3# usermod -aG sudo test 
+root@mykitchen:~/lesson3# id test 
+uid=1001(test) gid=1001(test) groups=1001(test),27(sudo)
+
+4) Создать группу developer и несколько пользователей, входящих в нее. Создать директорию для совместной работы. Сделать так,
+чтобы созданные одними пользователями файлы могли изменять другие пользователи этой группы.
+
+root@mykitchen:~/lesson3# addgroup developers
+Adding group `developers' (GID 1002) ...
+Done.
+root@mykitchen:~/lesson3# cat /etc/group | grep developers
+developers:x:1002:
+
+группу создали, теперь добавим в нее пользователей, добавлю себя (cook) и недавно соданный (test), сделаю это не при помощи команды
+usermod, а при помощи дерактирования файла /etc/groups, для этого нам понадобятся uid пользователей.
+
+root@mykitchen:~/lesson3# id cook 
+uid=1000(cook) gid=1000(cook) groups=1000(cook),27(sudo)
+root@mykitchen:~/lesson3# id test
+uid=1001(test) gid=1001(test) groups=1001(test),27(sudo)
+
+добавилю руками наших пользователей в этот файлик
+
+root@mykitchen:~/lesson3# vim /etc/group
+root@mykitchen:~/lesson3# tail -n -5 /etc/group
+ssl-cert:x:111:
+rdma:x:112:
+cook:x:1000:
+test:x:1001:
+developers:x:1002:cook,test
+
+как мы можем ниже убедиться, пользователи состоят в группе developers
+
+root@mykitchen:~/lesson3# id cook 
+uid=1000(cook) gid=1000(cook) groups=1000(cook),27(sudo),1002(developers)
+root@mykitchen:~/lesson3# id test
+uid=1001(test) gid=1001(test) groups=1001(test),27(sudo),1002(developers)
+
+
+ дем дальше, нужно Создать директорию для совместной работы. Сделать так, чтобы созданные одними пользователями файлы
+могли изменять другие пользователи этой группы.
+
+создам отдельную директорию work и парочку файлов
+
+root@mykitchen:~/lesson3# mkdir work
+root@mykitchen:~/lesson3# touch work/testfile1
+root@mykitchen:~/lesson3# touch work/testfile2
+root@mykitchen:~/lesson3# ls -l
+total 12
+-rw-rw-r-- 1 root root  382 мар  4 17:42 top_process1
+-rw------- 1 root root  382 мар  4 17:42 top_process2
+drwxr-xr-x 2 root root 4096 мар  4 18:11 work
+
+директория и файлы созданы, как мы видем выше ими полностью владее т root, все прочие пользователи могут лишь просматривать содержимое
+директории worк. Изменим права группу пользователей у директории и файлов,а так же изменим сами права, что бы запретить всем остальным
+пользователям что либо делать с этими файлами и директорией.
+
+root@mykitchen:~/lesson3# chgrp -R developers work
+root@mykitchen:~/lesson3# chmod -R 770 work
+root@mykitchen:~/lesson3# ls -l
+total 12
+-rw-rw-r-- 1 root root        382 мар  4 17:42 top_process1
+-rw------- 1 root root        382 мар  4 17:42 top_process2
+drwxrwx--- 2  770 developers 4096 мар  4 18:11 work
+root@mykitchen:~/lesson3# ls -l work/
+total 0
+-rwxrwx--- 1 770 developers 0 мар  4 18:11 testfile1
+-rwxrwx--- 1 770 developers 0 мар  4 18:11 testfile2
+
+как мы можем видеть, файлы testfile1 и testfile2 доступны для чтения, записи и исполнения для пользователя root и группы developers.
+директрию work, могут просматривать и работать в ней только root и группа пользователей developers.
+
+попробуем изменить файл testfile1 из под пользователя cook, а затем из под test
+
+выхожу из под пользователя  root, наинаю работать из под cook, запишу в файл одну строчку
+
+cook@mykitchen:~$ cat /etc/hostname > /home/cook/lesson3/work/testfile1
+cook@mykitchen:~$ cat /home/cook/lesson3/work/testfile1 
+mykitchen`
+
+затем зайду под пользователя test и попробую изменить этот же файл
+
+cook@mykitchen:~$ su test
+Password: 
+To run a command as administrator (user "root"), use "sudo <command>".
+See "man sudo_root" for details.
+
+test@mykitchen:/home/cook$ echo "Hello World!" >> /home/cook/lesson3/work/testfile1
+test@mykitchen:/home/cook$ cat /home/cook/lesson3/work/testfile1
+mykitchen`
+Hello World!
+
+
+как мы можем видеть, действительно оба пользователя могут что либо делать с этим файлом. 
+
+
+
+
+
+
+
+
+
+
