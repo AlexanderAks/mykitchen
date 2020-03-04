@@ -1,0 +1,37 @@
+1) Создание, копирование файлов, создание символических и жестких ссылок. Просмотр информации об айнодах. Перемещение и удаление
+файлов и ссылок.
+
+Для начала создам файлы file1, file2 с одинаковым произвольным содержимым, как этого требует задание:
+
+root@mykitchen:~/lesson3# systemctl status sshd.service > file1
+root@mykitchen:~/lesson3# cat file1 
+● ssh.service - OpenBSD Secure Shell server
+   Loaded: loaded (/lib/systemd/system/ssh.service; enabled; vendor preset: enabled)
+   Active: active (running) since Thu 2020-02-27 21:35:37 MSK; 5 days ago
+  Process: 1061 ExecStartPre=/usr/sbin/sshd -t (code=exited, status=0/SUCCESS)
+ Main PID: 1062 (sshd)
+    Tasks: 1 (limit: 524)
+   CGroup: /system.slice/ssh.service
+           └─1062 /usr/sbin/sshd -D
+
+мар 04 15:25:21 mykitchen sshd[27413]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=106.12.55.118
+мар 04 15:25:23 mykitchen sshd[27413]: Failed password for invalid user sftptest from 106.12.55.118 port 44096 ssh2
+мар 04 15:25:24 mykitchen sshd[27413]: Received disconnect from 106.12.55.118 port 44096:11: Bye Bye [preauth]
+мар 04 15:25:24 mykitchen sshd[27413]: Disconnected from invalid user sftptest 106.12.55.118 port 44096 [preauth]
+мар 04 15:25:28 mykitchen sshd[27416]: Invalid user air from 47.180.212.134 port 46773
+мар 04 15:25:28 mykitchen sshd[27416]: pam_unix(sshd:auth): check pass; user unknown
+мар 04 15:25:28 mykitchen sshd[27416]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=47.180.212.134
+мар 04 15:25:30 mykitchen sshd[27416]: Failed password for invalid user air from 47.180.212.134 port 46773 ssh2
+мар 04 15:25:31 mykitchen sshd[27416]: Received disconnect from 47.180.212.134 port 46773:11: Bye Bye [preauth]
+мар 04 15:25:31 mykitchen sshd[27416]: Disconnected from invalid user air 47.180.212.134 port 46773 [preauth]
+root@mykitchen:~/lesson3# cp file1 file2
+root@mykitchen:~/lesson3# ls -la
+total 16
+drwxr-xr-x 2 root root 4096 мар  4 15:26 .
+drwxr-xr-x 6 cook cook 4096 мар  4 13:27 ..
+-rw-r--r-- 1 root root 1571 мар  4 15:25 file1
+-rw-r--r-- 1 root root 1571 мар  4 15:26 file2
+
+
+Как мы можем убедиться, теперь у меня есть два файла с одинаковым содержимым, далее создадим символическую ссылку file3 и
+жесткую ссылку file4, обе они будут смотреть на file1.
