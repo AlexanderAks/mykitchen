@@ -80,3 +80,19 @@ root@mykitchen:~/lesson3# cat file4
 как мы можем видеть символическая ссылка сломалась, так как она теперь не знает на что ссылкаться, file1 не существует. В тоже время
 жесткая ссылка продолжает работать.
 
+Вернремся в исходное состояние. Удалю имеющиеся файлы и ссылки и создам по новой.
+
+root@mykitchen:~/lesson3# systemctl status sshd.service > file1
+root@mykitchen:~/lesson3# cp file1 file2
+root@mykitchen:~/lesson3# ln -s /home/cook/lesson3/file1 /home/cook/lesson3/file3
+root@mykitchen:~/lesson3# ln /home/cook/lesson3/file1 /home/cook/lesson3/file4
+root@mykitchen:~/lesson3# ls -li
+total 12
+403813 -rw-r--r-- 2 root root 1592 мар  4 16:59 file1
+403814 -rw-r--r-- 1 root root 1592 мар  4 16:59 file2
+403815 lrwxrwxrwx 1 root root   24 мар  4 17:01 file3 -> /home/cook/lesson3/file1
+403813 -rw-r--r-- 2 root root 1592 мар  4 16:59 file4
+
+и так мы снова имеем файл источник и две ссылки, жесткую и символическую.
+
+2) Дать созданым файлам другие имена, поменять на них права использую символьный и числовой методы.
