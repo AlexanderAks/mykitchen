@@ -95,4 +95,201 @@ total 12
 
 и так мы снова имеем файл источник и две ссылки, жесткую и символическую.
 
-2) Дать созданым файлам другие имена, поменять на них права использую символьный и числовой методы.
+2) Дать созданым файлам другие имена, переместить ссылки в другую директорию. Проверить что будет. Поменять на файлы 
+права использую символьный и числовой методы.
+
+переименуем файл на который ссылаются ссылки:
+
+root@mykitchen:~/lesson3# mv file1 test_file1
+root@mykitchen:~/lesson3# ls -li
+total 12
+403814 -rw-r--r-- 1 root root 1592 мар  4 16:59 file2
+403815 lrwxrwxrwx 1 root root   24 мар  4 17:01 file3 -> /home/cook/lesson3/file1
+403813 -rw-r--r-- 2 root root 1592 мар  4 16:59 file4
+403813 -rw-r--r-- 2 root root 1592 мар  4 16:59 test_file1
+
+как мы можем видеть имя файла успешно изменено, теперь посмотрим работают ли ссылки.
+
+root@mykitchen:~/lesson3# cat file3 
+cat: file3: No such file or directory
+root@mykitchen:~/lesson3# cat file4 
+● ssh.service - OpenBSD Secure Shell server
+   Loaded: loaded (/lib/systemd/system/ssh.service; enabled; vendor preset: enabled)
+   Active: active (running) since Thu 2020-02-27 21:35:37 MSK; 5 days ago
+  Process: 1061 ExecStartPre=/usr/sbin/sshd -t (code=exited, status=0/SUCCESS)
+ Main PID: 1062 (sshd)
+    Tasks: 3 (limit: 524)
+   CGroup: /system.slice/ssh.service
+           ├─ 1062 /usr/sbin/sshd -D
+           ├─28260 sshd: [accepted]
+           └─28261 sshd: [net]
+
+мар 04 16:58:28 mykitchen sshd[28243]: Failed password for invalid user fujino from 122.51.115.76 port 41394 ssh2
+мар 04 16:58:29 mykitchen sshd[28243]: Received disconnect from 122.51.115.76 port 41394:11: Bye Bye [preauth]
+мар 04 16:58:29 mykitchen sshd[28243]: Disconnected from invalid user fujino 122.51.115.76 port 41394 [preauth]
+мар 04 16:58:33 mykitchen sshd[28248]: Invalid user web from 219.142.140.2 port 62429
+мар 04 16:58:33 mykitchen sshd[28248]: pam_unix(sshd:auth): check pass; user unknown
+мар 04 16:58:33 mykitchen sshd[28248]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=219.142.140.2
+мар 04 16:58:35 mykitchen sshd[28248]: Failed password for invalid user web from 219.142.140.2 port 62429 ssh2
+мар 04 16:58:35 mykitchen sshd[28248]: Received disconnect from 219.142.140.2 port 62429:11: Bye Bye [preauth]
+мар 04 16:58:35 mykitchen sshd[28248]: Disconnected from invalid user web 219.142.140.2 port 62429 [preauth]
+мар 04 16:58:36 mykitchen sshd[28239]: Connection closed by 182.61.150.73 port 39858 [preauth]
+
+как видно выше, символическая ссылка опять перестала работать, так как не может найти файл на который она ранее ссылалась.
+Жесткая ссылка продолжает работать, так как она ссылается на айноду а не на имя файла и ей все равно, какое имя имеел файл источник.
+
+верну файлу test_file1 прежнее имя, и починю символическую ссылку
+
+root@mykitchen:~/lesson3# mv test_file1 file1
+root@mykitchen:~/lesson3# ls -li
+total 12
+403813 -rw-r--r-- 2 root root 1592 мар  4 16:59 file1
+403814 -rw-r--r-- 1 root root 1592 мар  4 16:59 file2
+403815 lrwxrwxrwx 1 root root   24 мар  4 17:01 file3 -> /home/cook/lesson3/file1
+403813 -rw-r--r-- 2 root root 1592 мар  4 16:59 file4
+root@mykitchen:~/lesson3# cat file3
+● ssh.service - OpenBSD Secure Shell server
+   Loaded: loaded (/lib/systemd/system/ssh.service; enabled; vendor preset: enabled)
+   Active: active (running) since Thu 2020-02-27 21:35:37 MSK; 5 days ago
+  Process: 1061 ExecStartPre=/usr/sbin/sshd -t (code=exited, status=0/SUCCESS)
+ Main PID: 1062 (sshd)
+    Tasks: 3 (limit: 524)
+   CGroup: /system.slice/ssh.service
+           ├─ 1062 /usr/sbin/sshd -D
+           ├─28260 sshd: [accepted]
+           └─28261 sshd: [net]
+
+мар 04 16:58:28 mykitchen sshd[28243]: Failed password for invalid user fujino from 122.51.115.76 port 41394 ssh2
+мар 04 16:58:29 mykitchen sshd[28243]: Received disconnect from 122.51.115.76 port 41394:11: Bye Bye [preauth]
+мар 04 16:58:29 mykitchen sshd[28243]: Disconnected from invalid user fujino 122.51.115.76 port 41394 [preauth]
+мар 04 16:58:33 mykitchen sshd[28248]: Invalid user web from 219.142.140.2 port 62429
+мар 04 16:58:33 mykitchen sshd[28248]: pam_unix(sshd:auth): check pass; user unknown
+мар 04 16:58:33 mykitchen sshd[28248]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=219.142.140.2
+мар 04 16:58:35 mykitchen sshd[28248]: Failed password for invalid user web from 219.142.140.2 port 62429 ssh2
+мар 04 16:58:35 mykitchen sshd[28248]: Received disconnect from 219.142.140.2 port 62429:11: Bye Bye [preauth]
+мар 04 16:58:35 mykitchen sshd[28248]: Disconnected from invalid user web 219.142.140.2 port 62429 [preauth]
+мар 04 16:58:36 mykitchen sshd[28239]: Connection closed by 182.61.150.73 port 39858 [preauth]
+
+ссылка вновь работает, теперь перемещу ссылки в другую директорию, например в мою домашнюю директорию cook
+
+root@mykitchen:~/lesson3# mv file3 /home/cook/
+root@mykitchen:~/lesson3# mv file4 /home/cook/
+root@mykitchen:~/lesson3# cd ../
+root@mykitchen:~# ls -la
+total 52
+drwxr-xr-x 6 cook cook 4096 мар  4 17:17 .
+drwxr-xr-x 3 root root 4096 фев 27 21:07 ..
+-rw------- 1 root root 1024 мар  4 15:38 .bash_history
+-rw-r--r-- 1 cook cook  220 фев 27 21:07 .bash_logout
+-rw-r--r-- 1 cook cook 3771 фев 27 21:07 .bashrc
+drwx------ 2 cook cook 4096 фев 27 21:32 .cache
+lrwxrwxrwx 1 root root   24 мар  4 17:01 file3 -> /home/cook/lesson3/file1
+-rw-r--r-- 2 root root 1592 мар  4 16:59 file4
+drwx------ 3 cook cook 4096 фев 27 21:32 .gnupg
+drwxr-xr-x 2 root root 4096 мар  4 17:17 lesson3
+-rw-r--r-- 1 cook cook  807 фев 27 21:07 .profile
+drwxr-xr-x 2 cook cook 4096 фев 27 21:45 .ssh
+-rw-r--r-- 1 cook cook    0 фев 27 21:32 .sudo_as_admin_successful
+-rw------- 1 cook cook 6822 мар  3 14:07 .viminfo
+
+ссылки переместил, теперь посмотрим работают ли они
+root@mykitchen:~# cat file3 
+● ssh.service - OpenBSD Secure Shell server
+   Loaded: loaded (/lib/systemd/system/ssh.service; enabled; vendor preset: enabled)
+   Active: active (running) since Thu 2020-02-27 21:35:37 MSK; 5 days ago
+  Process: 1061 ExecStartPre=/usr/sbin/sshd -t (code=exited, status=0/SUCCESS)
+ Main PID: 1062 (sshd)
+    Tasks: 3 (limit: 524)
+   CGroup: /system.slice/ssh.service
+           ├─ 1062 /usr/sbin/sshd -D
+           ├─28260 sshd: [accepted]
+           └─28261 sshd: [net]
+
+мар 04 16:58:28 mykitchen sshd[28243]: Failed password for invalid user fujino from 122.51.115.76 port 41394 ssh2
+мар 04 16:58:29 mykitchen sshd[28243]: Received disconnect from 122.51.115.76 port 41394:11: Bye Bye [preauth]
+мар 04 16:58:29 mykitchen sshd[28243]: Disconnected from invalid user fujino 122.51.115.76 port 41394 [preauth]
+мар 04 16:58:33 mykitchen sshd[28248]: Invalid user web from 219.142.140.2 port 62429
+мар 04 16:58:33 mykitchen sshd[28248]: pam_unix(sshd:auth): check pass; user unknown
+мар 04 16:58:33 mykitchen sshd[28248]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=219.142.140.2
+мар 04 16:58:35 mykitchen sshd[28248]: Failed password for invalid user web from 219.142.140.2 port 62429 ssh2
+мар 04 16:58:35 mykitchen sshd[28248]: Received disconnect from 219.142.140.2 port 62429:11: Bye Bye [preauth]
+мар 04 16:58:35 mykitchen sshd[28248]: Disconnected from invalid user web 219.142.140.2 port 62429 [preauth]
+мар 04 16:58:36 mykitchen sshd[28239]: Connection closed by 182.61.150.73 port 39858 [preauth]
+root@mykitchen:~# cat file4 
+● ssh.service - OpenBSD Secure Shell server
+   Loaded: loaded (/lib/systemd/system/ssh.service; enabled; vendor preset: enabled)
+   Active: active (running) since Thu 2020-02-27 21:35:37 MSK; 5 days ago
+  Process: 1061 ExecStartPre=/usr/sbin/sshd -t (code=exited, status=0/SUCCESS)
+ Main PID: 1062 (sshd)
+    Tasks: 3 (limit: 524)
+   CGroup: /system.slice/ssh.service
+           ├─ 1062 /usr/sbin/sshd -D
+           ├─28260 sshd: [accepted]
+           └─28261 sshd: [net]
+
+мар 04 16:58:28 mykitchen sshd[28243]: Failed password for invalid user fujino from 122.51.115.76 port 41394 ssh2
+мар 04 16:58:29 mykitchen sshd[28243]: Received disconnect from 122.51.115.76 port 41394:11: Bye Bye [preauth]
+мар 04 16:58:29 mykitchen sshd[28243]: Disconnected from invalid user fujino 122.51.115.76 port 41394 [preauth]
+мар 04 16:58:33 mykitchen sshd[28248]: Invalid user web from 219.142.140.2 port 62429
+мар 04 16:58:33 mykitchen sshd[28248]: pam_unix(sshd:auth): check pass; user unknown
+мар 04 16:58:33 mykitchen sshd[28248]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=219.142.140.2
+мар 04 16:58:35 mykitchen sshd[28248]: Failed password for invalid user web from 219.142.140.2 port 62429 ssh2
+мар 04 16:58:35 mykitchen sshd[28248]: Received disconnect from 219.142.140.2 port 62429:11: Bye Bye [preauth]
+мар 04 16:58:35 mykitchen sshd[28248]: Disconnected from invalid user web 219.142.140.2 port 62429 [preauth]
+мар 04 16:58:36 mykitchen sshd[28239]: Connection closed by 182.61.150.73 port 39858 [preauth]
+
+работают, так как местоположение файла на который они ссылаются не менялось, в в самих ссылках прописал абсолютный путь до файла, 
+а не относительный, поэтому они не ориентируются на текущий каталог где находятся саами. Более того я уверен что жесткая ссылка
+продолжит работать, даже если переместить файл источник, символическая работать перестанет.
+
+root@mykitchen:~# cd lesson3/
+root@mykitchen:~/lesson3# mv file1 /home/cook/
+root@mykitchen:~/lesson3# cd ../
+root@mykitchen:~# ls -li
+total 12
+403813 -rw-r--r-- 2 root root 1592 мар  4 16:59 file1
+403815 lrwxrwxrwx 1 root root   24 мар  4 17:01 file3 -> /home/cook/lesson3/file1
+403813 -rw-r--r-- 2 root root 1592 мар  4 16:59 file4
+403812 drwxr-xr-x 2 root root 4096 мар  4 17:20 lesson3
+
+перенес наш файл источник на уровень выше в мою домашнюю директорию
+
+root@mykitchen:~# cat file3
+cat: file3: No such file or directory
+root@mykitchen:~# cat file4
+● ssh.service - OpenBSD Secure Shell server
+   Loaded: loaded (/lib/systemd/system/ssh.service; enabled; vendor preset: enabled)
+   Active: active (running) since Thu 2020-02-27 21:35:37 MSK; 5 days ago
+  Process: 1061 ExecStartPre=/usr/sbin/sshd -t (code=exited, status=0/SUCCESS)
+ Main PID: 1062 (sshd)
+    Tasks: 3 (limit: 524)
+   CGroup: /system.slice/ssh.service
+           ├─ 1062 /usr/sbin/sshd -D
+           ├─28260 sshd: [accepted]
+           └─28261 sshd: [net]
+
+мар 04 16:58:28 mykitchen sshd[28243]: Failed password for invalid user fujino from 122.51.115.76 port 41394 ssh2
+мар 04 16:58:29 mykitchen sshd[28243]: Received disconnect from 122.51.115.76 port 41394:11: Bye Bye [preauth]
+мар 04 16:58:29 mykitchen sshd[28243]: Disconnected from invalid user fujino 122.51.115.76 port 41394 [preauth]
+мар 04 16:58:33 mykitchen sshd[28248]: Invalid user web from 219.142.140.2 port 62429
+мар 04 16:58:33 mykitchen sshd[28248]: pam_unix(sshd:auth): check pass; user unknown
+мар 04 16:58:33 mykitchen sshd[28248]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=219.142.140.2
+мар 04 16:58:35 mykitchen sshd[28248]: Failed password for invalid user web from 219.142.140.2 port 62429 ssh2
+мар 04 16:58:35 mykitchen sshd[28248]: Received disconnect from 219.142.140.2 port 62429:11: Bye Bye [preauth]
+мар 04 16:58:35 mykitchen sshd[28248]: Disconnected from invalid user web 219.142.140.2 port 62429 [preauth]
+мар 04 16:58:36 mykitchen sshd[28239]: Connection closed by 182.61.150.73 port 39858 [preauth]
+
+символическая ссылка теперь ожидаемо не работает, а жесткая работает. Но тут важен 1 момент, она более не явялется ссылкой на 
+file1, есл ипосмотреть выво команды ls -li, то можно заметить что номер айнод у них теперь различаются и оба файла ссылаются на
+разные физические области диска. Проверим на практике, внеся изменения в файл 1
+
+root@mykitchen:~# echo "Hello" > file1 
+root@mykitchen:~# cat file1
+Hello
+root@mykitchen:~# cat file4
+Hello
+
+Честно говоря данный результат для меня является большим сюрпризом, я оджидал, что теперь file1 и file4 живут раздельной жизнью,
+но нет. Они по прежнему являются файлом источником и ссылкой на него.
+
+
