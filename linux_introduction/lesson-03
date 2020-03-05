@@ -483,10 +483,53 @@ Hello World!
 как мы можем видеть, действительно оба пользователя могут что либо делать с этим файлом. 
 
 
+5) Создать в директории для совместной работы поддиректорию для обмена файлами, 
+но чтобы удалять файлы могли только их создатели.
 
+cook@mykitchen:~/lesson3/work$ mkdir common_dir
+cook@mykitchen:~/lesson3/work$ cd common_dir/
+cook@mykitchen:~/lesson3/work/common_dir$ touch common_file1
+cook@mykitchen:~/lesson3/work/common_dir$ ls -la
+total 8
+drwxrwxr-x 2 cook cook       4096 мар  5 17:51 .
+drwxrwx--- 3  770 developers 4096 мар  5 17:50 ..
+-rw-rw-r-- 1 cook cook          0 мар  5 17:51 common_file1
 
+Для того что бы файл ни кто кроме владельца не мог удалить, я буду использовать Sticky Bit, он добавляется в команде chmod перед
+основными правами на файл, по умолчанию он 0, но если выставить его в 1, то файл будет защищен от удаления, теми кто может его редактировать.
 
+cook@mykitchen:~/lesson3/work/common_dir$ chmod 1770 common_file1 
+cook@mykitchen:~/lesson3/work/common_dir$ chgrp developers common_file1 
+cook@mykitchen:~/lesson3/work/common_dir$ ls -l
+total 0
+-rwxrwx--T 1 cook developers 0 мар  5 17:51 common_file1
 
+Как мы можем заметить выше символ T обозначет, то что Sticky Bit выставлен в значение 1.
+
+Сменим пользователя, и попробуем изменить а затем удалить файл common_file1
+
+root@mykitchen:~# su test
+To run a command as administrator (user "root"), use "sudo <command>".
+See "man sudo_root" for details.
+
+test@mykitchen:/home/cook$ cd lesson3/
+test@mykitchen:/home/cook/lesson3$ cd work/
+test@mykitchen:/home/cook/lesson3/work$ cd common_dir/
+test@mykitchen:/home/cook/lesson3/work/common_dir$ ls -l
+total 4
+-rwxrwx--T 1 cook developers 12 мар  5 18:16 common_file1
+test@mykitchen:/home/cook/lesson3/work/common_dir$ echo "Hello cook!" > common_file1 
+test@mykitchen:/home/cook/lesson3/work/common_dir$ cat common_file1 
+Hello cook!
+
+как мы можем заметить, я успешно отредактировал файл, теперь попробую его удалить.
+
+test@mykitchen:/home/cook/lesson3/work/common_dir$ rm common_file1 
+rm: cannot remove 'common_file1': Permission denied
+
+как мы видим ничего не выходит, хотя пользователь test входит в группу developers и имеет права rwx на этот файл, он не может
+его удалить, потому что ранее я поставил на файл от лица пользователя cook, так называемый sticky bit, он защищает файлы владельца
+от удаления, кем либо, кому файл доступен для работы. Тоже самое можно делать и с директориями.
 
 
 
