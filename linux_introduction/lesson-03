@@ -531,6 +531,35 @@ rm: cannot remove 'common_file1': Permission denied
 его удалить, потому что ранее я поставил на файл от лица пользователя cook, так называемый sticky bit, он защищает файлы владельца
 от удаления, кем либо, кому файл доступен для работы. Тоже самое можно делать и с директориями.
 
+6) * Создать директорию, в которой есть несколько файлов. Сделать так, чтобы открыть файлы можно было, только зная 
+имя файла, а через ls список файлов посмотреть было нельзя.
+
+
+Для выполнения этого задания воспользуюсь уже имеющейся директорией common_dir, в которой ранее создавал файлы и они были
+доступны для группы developers. Для того, что бы убрать возмодность видеть содержимое директории, надо оставить права на испольнение
+и убрать все остальное, в таком случае я смогу попасть внутрь директории и работать в ней, но не смогу прочесть её содержимое.
+
+root@mykitchen:~/lesson3/work# ls common_dir/
+common_file1
+root@mykitchen:~/lesson3/work# chmod 111 common_dir/
+root@mykitchen:~/lesson3/work# ls common_dir/
+common_file1
+root@mykitchen:~/lesson3/work# exit
+
+Меняю прользователя, что бы работать из под cook, так как он в группе developers
+
+cook@mykitchen:~$ cd lesson3/work/
+cook@mykitchen:~/lesson3/work$ ls common_dir/
+ls: cannot open directory 'common_dir/': Permission denied
+cook@mykitchen:~/lesson3/work$ cd common_dir/
+cook@mykitchen:~/lesson3/work/common_dir$ ls
+ls: cannot open directory '.': Permission denied
+cook@mykitchen:~/lesson3/work/common_dir$ cat common_file1
+Hello cook!
+cook@mykitchen:~/lesson3/work/common_dir$ 
+
+Как мы можем видеть, я не могу посмотреть список файлов директории common_dir но легко могу открыть файл common_file1, с
+учетом того что я знаю его имя конечно.
 
 
 
