@@ -1,0 +1,100 @@
+1) Написать скрипт, который удаляет из текстового файла пустые строки и заменяет маленькие символы на большие. 
+
+Для начала создам текстовый файл, в котором будут слова из символов разного регистра и пустые строки.
+
+root@mykitchen:~/lesson4# touch test_file
+root@mykitchen:~/lesson4# vim test_file 
+root@mykitchen:~/lesson4# cat test_file 
+Hello World!
+
+hello world!
+
+test text file.
+
+И так мы видим, что в моём файле 5 строк, 3 из них заполнены разными словами, 2 между ними совсем пустые. Теперь перходим к
+создание файла для скрипта.
+
+root@mykitchen:~/lesson4# touch script1.sh
+root@mykitchen:~/lesson4# chmod 760 script1.sh 
+root@mykitchen:~/lesson4# ls -l
+total 8
+-rwxrw---- 1 root root 312 мар 12 23:25 script1.sh
+-rw-r--r-- 1 root root  44 мар 12 22:32 test_file
+
+и так мы создали сам файл и дали этому файлу возможность исполнения, такое право имеет только владелец, переходим к написанию
+скрипта
+root@mykitchen:~/lesson4# vim script1.sh
+
+#!/bin/bash
+#при помощи команды tr (translate) - которая позволяет преобразовывать символы, заменим все символы нижнего регистра на символы верхнего регистра
+cat test_file | tr '[:lower:]' '[:upper:]' > test_file1&&cat test_file1
+echo "Отлично, все семволы в строках файла теперь в верхнем регистре! Продолжим работать с файлом, удалим пустые строки."
+#теперь удалим все пустые строки из файла. Снова при помощи команды tr где ключ -s уберет все пустые строки (\n - обозначает новую строку)
+tr -s '\n' < test_file1 > result_file&&cat result_file
+echo "Теперь из файла удалены пустые строки и он приведен к нужному нам виду"
+
+wq!
+
+root@mykitchen:~/lesson4# ./script1.sh 
+HELLO WORLD!
+
+HELLO WORLD!
+
+TEST TEXT FILE.
+
+Отлично, все семволы в строках файла теперь в верхнем регистре! Продолжим работать с файлом, удалим пустые строки.
+HELLO WORLD!
+HELLO WORLD!
+TEST TEXT FILE.
+Теперь из файла удалены пустые строки и он приведен к нужному нам виду
+
+
+В результате работы скрипта были созданы новые файлы со следующим содержимым:
+
+root@mykitchen:~/lesson4# ls -l
+total 16
+-rw-r--r-- 1 root root  42 мар 13 00:06 result_file
+-rwxrw---- 1 root root 992 мар 13 00:06 script1.sh
+-rw-r--r-- 1 root root  45 мар 13 00:02 test_file
+-rw-r--r-- 1 root root  45 мар 13 00:06 test_file1
+
+root@mykitchen:~/lesson4# cat test_file
+Hello World!
+
+hello world!
+
+test text file.
+
+root@mykitchen:~/lesson4# cat test_file1
+HELLO WORLD!
+
+HELLO WORLD!
+
+TEST TEXT FILE.
+
+root@mykitchen:~/lesson4# cat result_file 
+HELLO WORLD!
+HELLO WORLD!
+TEST TEXT FILE.
+
+
+
+root@mykitchen:~/lesson4# cat test_file
+Hello World!
+
+hello world!
+
+test text file.
+
+root@mykitchen:~/lesson4# cat test_file1
+HELLO WORLD!
+
+HELLO WORLD!
+
+TEST TEXT FILE.
+
+root@mykitchen:~/lesson4# cat result_file 
+HELLO WORLD!
+HELLO WORLD!
+TEST TEXT FILE.
+
