@@ -98,3 +98,28 @@ HELLO WORLD!
 HELLO WORLD!
 TEST TEXT FILE.
 
+2) Создать директории, поддиректории и файлы с произвольными записями.
+
+Сразу перейдем к созданию файла, в котором будем писать наш скрипт и наделим файл нужными правами на исполнение.
+root@mykitchen:~/lesson4/task2# touch script2.sh
+root@mykitchen:~/lesson4/task2# chmod 760 script2.sh 
+root@mykitchen:~/lesson4/task2# ls -l
+total 0
+-rwxrw---- 1 root root 0 мар 13 00:14 script2.sh
+
+root@mykitchen:~/lesson4/task2# vim script2.sh
+
+#!/bin/bash
+#создадим директории и поддиректории, для создания вложеных директорий используем ключ -p
+mkdir -p dir20{10..17}/{01..12} 
+ls -l
+echo "Как мы видим директории созданы, рекурсивно не вывожу список, потому что будет он будет большой, вывод получится грамосткий"
+#Далее напишем небольшой скрипт с использованием цикла for, где A b B переменные, а последовательности dir{2010..2017} и {01..12} их значения
+for A in dir{2010..2017} 
+do
+       for B in {01..12}
+       do
+        touch ~/lesson4/task2/$A/$B/test_file_$A--$B--{01..30}            
+       done
+done
+
